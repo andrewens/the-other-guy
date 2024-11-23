@@ -6,7 +6,7 @@ import os
 import importlib
 
 agents_directory_name = "agents"
-agent_modules = {} # agen
+agent_modules = {} # string agent_name --> <Module>
 
 class GameSimulation:
     def __init__(self, agent1_name, agent2_name, agent3_name):
@@ -54,6 +54,9 @@ class GameSimulation:
             "log": log,
         }
             
+def get_all_agent_module_names():
+    return list(agent_modules.keys())
+
         
 def run():
     for file_name in os.listdir(agents_directory_name):
