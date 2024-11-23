@@ -4,6 +4,7 @@ This is the main interface for all game simulation code.
 
 import os
 import importlib
+import random
 
 agents_directory_name = "agents"
 agent_modules = {} # string agent_name --> <Module>
@@ -56,7 +57,8 @@ class GameSimulation:
         agent3_score = 0
 
         while len(cards_left) > 0:
-            auctioned_card = cards_left.pop()
+            random_index = random.randint(0, len(cards_left) - 1)
+            auctioned_card = cards_left.pop(random_index)
 
             agent1_card = self._agent1.play_card(auctioned_card)
             agent2_card = self._agent2.play_card(auctioned_card)
