@@ -21,6 +21,28 @@ class GameSimulation:
         self._agent2 = agent_modules[agent2_name].Agent()
         self._agent3 = agent_modules[agent3_name].Agent()
         
+
+    def calculate_winning_agent(self, agent1_card, agent2_card, agent3_card):
+        # if two players play the same card, the other player wins
+        if agent2_card == agent3_card and agent3_card != agent1_card:
+            return 1
+        if agent3_card == agent1_card and agent1_card != agent2_card:
+            return 2
+        if agent1_card == agent2_card and agent2_card != agent3_card:
+            return 3
+        
+        # otherwise, the player with the max card wins
+        if agent1_card > max(agent2_card, agent3_card):
+            return 1
+        if agent2_card > max(agent3_card, agent1_card):
+            return 2
+        if agent3_card > max(agent1_card, agent2_card):
+            return 3
+        
+        # if all players play the same card, no one wins
+        return None
+        
+        
     def run(self):
         cards_left = list(range(1, 14)) # TODO randomize this list of cards
         log = []
@@ -52,17 +74,13 @@ class GameSimulation:
             agent2_cards_left.remove(agent2_card)
             agent3_cards_left.remove(agent3_card)
             
-            # if two agents play the same card, the other agent wins the round.
-            # otherwise no one wins
-            winning_agent = None
-            if agent2_card == agent3_card and agent3_card != agent1_card:
-                winning_agent = 1
+            # who won?
+            winning_agent = self.calculate_winning_agent(agent1_card, agent2_card, agent3_card)
+            if winning_agent == 1:
                 agent1_score += auctioned_card
-            elif agent3_card == agent1_card and agent1_card != agent2_card:
-                winning_agent = 2
+            elif winning_agent == 2:
                 agent2_score += auctioned_card
-            elif agent1_card == agent2_card and agent2_card != agent3_card:
-                winning_agent = 3         
+            elif winning_agent == 3:
                 agent3_score += auctioned_card
             
             # results
