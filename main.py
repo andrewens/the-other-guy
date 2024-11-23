@@ -1,8 +1,11 @@
 import config
 import test_runner
+import the_other_guy
 
 
 def main():
+    the_other_guy.run()
+
     if config.testing_mode:
         test_runner.run()
 
