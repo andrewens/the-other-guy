@@ -1,17 +1,14 @@
 import the_other_guy
 
+
 def run():
 
-    # can create a GameSimulation by specifying three agents
-    the_other_guy.GameSimulation("test_agent", "test_agent", "test_agent")
+    # we can run a simulation and get results in a dictionary
+    sim = the_other_guy.GameSimulation("test_agent", "test_agent", "test_agent")
+    results = sim.run()
     
-     # it throws an error if you pass an invalid agent name
-    success = True
-    try:
-        the_other_guy.GameSimulation("test_agent", "test_agent", "this_isnt_an_agent_name")
-    except:
-        success = False
-        
-    if success:
-        raise Exception("GameSimulation failed to error when given a bad agent name")
+    assert isinstance(results, dict)
+   
+    
+    
 

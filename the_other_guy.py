@@ -14,6 +14,9 @@ class GameSimulation:
             raise Exception(str(agent2_name) + " is not the name of an agent module!")
         if agent3_name not in agent_module_names:
             raise Exception(str(agent3_name) + " is not the name of an agent module!")
+        
+    def run(self):
+        return {}
             
         
 def run():
