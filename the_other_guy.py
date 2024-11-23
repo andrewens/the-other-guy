@@ -28,13 +28,17 @@ class GameSimulation:
         agent1_cards_left = set(range(1, 14))
         agent2_cards_left = set(range(1, 14))
         agent3_cards_left = set(range(1, 14))
+        
+        agent1_score = 0
+        agent2_score = 0
+        agent3_score = 0
 
         while len(cards_left) > 0:
-            next_card = cards_left.pop()
+            auctioned_card = cards_left.pop()
 
-            agent1_card = self._agent1.play_card(next_card)
-            agent2_card = self._agent2.play_card(next_card)
-            agent3_card = self._agent3.play_card(next_card)
+            agent1_card = self._agent1.play_card(auctioned_card)
+            agent2_card = self._agent2.play_card(auctioned_card)
+            agent3_card = self._agent3.play_card(auctioned_card)
             
             # make sure agents are being honest
             if agent1_card not in agent1_cards_left:
@@ -53,23 +57,42 @@ class GameSimulation:
             winning_agent = None
             if agent2_card == agent3_card and agent3_card != agent1_card:
                 winning_agent = 1
+                agent1_score += auctioned_card
             elif agent3_card == agent1_card and agent1_card != agent2_card:
                 winning_agent = 2
+                agent2_score += auctioned_card
             elif agent1_card == agent2_card and agent2_card != agent3_card:
                 winning_agent = 3         
+                agent3_score += auctioned_card
             
             # results
             turn_log = {
-                "auctioned_card": next_card,
+                "auctioned_card": auctioned_card,
+                "winning_agent": winning_agent,
                 "agent1_card": agent1_card,
                 "agent2_card": agent2_card,
                 "agent3_card": agent3_card,
-                "winning_agent": winning_agent,
+                "agent1_score": agent1_score,
+                "agent2_score": agent2_score,
+                "agent3_score": agent3_score,
             }
             log.append(turn_log)
 
+        # calculate winning agent
+        winning_agent = None
+        if agent1_score > max(agent2_score, agent3_score):
+            winning_agent = 1
+        elif agent2_score > max(agent3_score, agent1_score):
+            winning_agent = 2
+        elif agent3_score > max(agent1_score, agent2_score):
+            winning_agent = 3            
+
         return {
             "log": log,
+            "agent1_final_score": agent1_score,
+            "agent2_final_score": agent2_score,
+            "agent3_final_score": agent3_score,
+            "winning_agent": winning_agent
         }
 
 
