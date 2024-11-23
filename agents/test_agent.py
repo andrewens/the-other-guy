@@ -1,12 +1,7 @@
 class Agent:
     def __init__(self):
-        self._remaining_cards = range(1, 13)
+        self._remaining_cards = list(range(1, 14))
 
-    def play_card(self, cardValue):
+    def play_card(self, auctioned_card):
         return self._remaining_cards.pop()
-
-
-my_agent = Agent()
-
-print(my_agent._remaining_cards)
 
