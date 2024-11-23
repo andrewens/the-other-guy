@@ -1,19 +1,23 @@
-import config
 import test_runner
 import the_other_guy
 
+def pretty_print_log(log):
+    for i in range(13):
+        turn_log = log[i]
+
+        print(f"Turn #{i+1}")
+        for key, value in turn_log.items():
+            print(f"\t{key}: {value}")
+        
 
 def main():
-    the_other_guy.run()
+    the_other_guy.run() # this just initializes the main simulation module
+    test_runner.run() # comment this out if you don't want to run the system tests
 
-    if config.testing_mode:
-        test_runner.run()
-
-    # insert code for the main experiment here
-    #Experiment = GameSimulation(test_agent, test_agent, test_agent)
-    #Experiment.run() # --> dictionary { int winner, List score[agent_index] }
-
-
+    sim = the_other_guy.GameSimulation("test_agent", "test_agent", "test_agent")
+    results = sim.run()
+    
+    pretty_print_log(results["log"])
 
 
 main()
