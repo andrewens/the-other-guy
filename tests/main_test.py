@@ -1,3 +1,7 @@
+import the_other_guy
+
 def run():
-    print("hello")
+
+    # can create a GameSimulation by specifying three agents
+    the_other_guy.GameSimulation("test_agent", "test_agent", "test_agent")   
 

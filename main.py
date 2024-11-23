@@ -7,7 +7,10 @@ def main():
         test_runner.run()
 
     # insert code for the main experiment here
-    print("Main!")
+    #Experiment = GameSimulation(test_agent, test_agent, test_agent)
+    #Experiment.run() # --> dictionary { int winner, List score[agent_index] }
+
+
 
 
 main()
