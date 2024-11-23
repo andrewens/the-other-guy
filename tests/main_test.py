@@ -33,7 +33,7 @@ def run():
         agent1_current_score = turn["agent1_score"] #log includes each agent's score at every turn
         agent2_current_score = turn["agent2_score"]
         agent3_current_score = turn["agent3_score"]
-        
+
         assert card_being_auctioned in card_values
         assert agent1_card in card_values
         assert agent2_card in card_values

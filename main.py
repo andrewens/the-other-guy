@@ -1,15 +1,30 @@
 import test_runner
 import the_other_guy
 
-def pretty_print_log(log):
+
+turn_log_first_column = [ "auctioned_card", "agent1_card", "agent2_card", "agent3_card" ]
+turn_log_second_column = [ "winning_agent", "agent1_score", "agent2_score", "agent3_score" ]
+final_results = [ "agent1_final_score", "agent2_final_score", "agent3_final_score", "winning_agent"]
+
+def pretty_print_results(results):
     print("\n")
     for i in range(13):
-        turn_log = log[i]
+        turn_log = results["log"][i]
 
         print(f"Turn #{i+1}")
-        for key, value in turn_log.items():
-            print(f"\t{key}: {value}")
         
+        for i in range(len(turn_log_first_column)):
+            key1 = turn_log_first_column[i]
+            key2 = turn_log_second_column[i]
+
+            print(f"\t{key1}: {turn_log[key1]}   \t{key2}: {turn_log[key2]}")
+
+    print("\n")
+    for key in final_results:
+        print(f"{key}: {results[key]}")
+
+    print("\n")
+
 
 def main():
     the_other_guy.run() # this just initializes the main simulation module
@@ -19,7 +34,7 @@ def main():
     sim = the_other_guy.GameSimulation("random_agent", "random_agent", "random_agent") 
     
     results = sim.run()
-    # pretty_print_log(results["log"])
+    pretty_print_results(results)
 
 
 main()
