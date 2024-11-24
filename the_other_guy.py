@@ -42,6 +42,14 @@ class GameSimulation:
         
         # if all players play the same card, no one wins
         return None
+    
+    
+    def decrement_winning_agent_index(self, winning_agent):
+        winning_agent -= 1
+        if winning_agent <= 0:
+            winning_agent = 3
+
+        return winning_agent
         
         
     def run(self):
@@ -84,6 +92,20 @@ class GameSimulation:
                 agent2_score += auctioned_card
             elif winning_agent == 3:
                 agent3_score += auctioned_card
+                
+            # tell agents who won
+            winning_agent_relative_to_agent1 = winning_agent
+            winning_agent_relative_to_agent2 = winning_agent
+            winning_agent_relative_to_agent3 = winning_agent
+
+            if not winning_agent is None: # there's a more elegant way to do this but I am tired as of writing this
+                winning_agent_relative_to_agent2 = self.decrement_winning_agent_index(winning_agent_relative_to_agent2)
+                winning_agent_relative_to_agent3 = self.decrement_winning_agent_index(winning_agent_relative_to_agent3)
+                winning_agent_relative_to_agent3 = self.decrement_winning_agent_index(winning_agent_relative_to_agent3)
+                
+            self._agent1.round_ended(auctioned_card, agent1_card, agent2_card, agent3_card, winning_agent_relative_to_agent1)
+            self._agent2.round_ended(auctioned_card, agent2_card, agent3_card, agent1_card, winning_agent_relative_to_agent2)
+            self._agent3.round_ended(auctioned_card, agent3_card, agent1_card, agent2_card, winning_agent_relative_to_agent3)
             
             # results
             turn_log = {

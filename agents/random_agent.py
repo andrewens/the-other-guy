@@ -7,4 +7,12 @@ class Agent:
     def play_card(self, auctioned_card):
         random_index = random.randint(0, len(self._remaining_cards) - 1)
         return self._remaining_cards.pop(random_index) # pick a random card in our hand
+    
+    def round_ended(self, auctioned_card, card_you_played, left_agent_card, right_agent_card, winning_agent):
+        # left_agent_card is the card the agent to your left played
+        # right_agent_card is the card the agenet to your right played
+        # winning_agent is 1 if we won the round, 2 if left_agent won, 3 if right_agent won, or None if no one won
+
+        return
+
 
