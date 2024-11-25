@@ -1,6 +1,5 @@
 """
-Prototypical agent for testing purposes.
-Feel free to copy-paste this module when making new agents.
+Agent That copies the auctioned card
 """
 
 class Agent:

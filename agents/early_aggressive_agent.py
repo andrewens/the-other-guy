@@ -1,6 +1,7 @@
 """
-Prototypical agent for testing purposes.
-Feel free to copy-paste this module when making new agents.
+More nuanced, but tried to bid two higher than the auctioned card when possible.
+Bids based on closest distance to two higher, if there is a distance tie, 
+opts for the higher bid
 """
 
 class Agent:

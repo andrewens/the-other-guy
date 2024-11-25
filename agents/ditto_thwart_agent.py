@@ -1,6 +1,6 @@
 """
-Prototypical agent for testing purposes.
-Feel free to copy-paste this module when making new agents.
+Agent made to thwart the ditto agent by copying the auctioned card and adding one
+Will bid 1 on the King(13)
 """
 
 class Agent:
