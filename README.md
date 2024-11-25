@@ -23,6 +23,10 @@ What is the optimal strategy of play, if any?
 If you are curious about how the system as a whole works, try reading the files in the `tests` directory, as they demonstrate how the system works (and is tested).
 
 # TODO
-* Support running lots of tests and understanding the distributions of results
+* (1) Support running lots of tests and understanding the distributions of results
 * Visualize that data with 3rd party libraries
-
+# [Hyp] Add agent names to printout, double check current agents
+# [Hyp] Brainstorm other simple strategy agents, add
+# [Hyp] Other than win/loss and scores, figure out if these are the only stats we care about  (other possibilities include bid differentials for each player for each round)
+# [Hyp] Extension of (1) After brainstorms, wrapper to run main.py many times with each combination of players and collect stats in csv for records -> then averaging, t-tests to test for differences, stddev and matplotlib for beauty
+# [Hyp] Discuss theme music
