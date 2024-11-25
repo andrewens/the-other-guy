@@ -25,8 +25,15 @@ If you are curious about how the system as a whole works, try reading the files 
 # TODO
 * (1) Support running lots of tests and understanding the distributions of results
 * Visualize that data with 3rd party libraries
-# [Hyp] Add agent names to printout, double check current agents
-# [Hyp] Brainstorm other simple strategy agents, add
-# [Hyp] Other than win/loss and scores, figure out if these are the only stats we care about  (other possibilities include bid differentials for each player for each round)
-# [Hyp] Extension of (1) After brainstorms, wrapper to run main.py many times with each combination of players and collect stats in csv for records -> then averaging, t-tests to test for differences, stddev and matplotlib for beauty
-# [Hyp] Discuss theme music
+* [Hyp] Add agent names to printout, double check current agents
+* [Hyp] Brainstorm other simple strategy agents, add
+* [Hyp] Other than win/loss and scores, figure out if these are the only stats we care about  (other possibilities include bid differentials for each player for each round)
+* [Hyp] Extension of (1) After brainstorms, wrapper to run main.py many times with each combination of players and collect stats in csv for records -> then averaging, t-tests to test for differences, stddev and matplotlib for beauty
+* [Hyp] Discuss theme music
+
+# Interesting questions / observations
+* The possible number of unique games is `13^4 x 12^4 x 11^4 x ... x 2^4 x 1^4 = 1.5035617E39`. Do you think if we reduced the number of possible cards in play, and mapped the decision tree for that, the patterns would be the same as they are for 13 card suites?
+* The sum of all the cards in a suite is 91. So to guarantee that you win, you have to get a sum of 46 cards. So it might make sense to have some sort of strategy where you throw on some turns in order to conserve purchasing power, and also it's possible for the game to be decided before it's over. Also if you keep track of your opponents' cards you could use that information to guarantee a win (i.e. if you know that they don't have a certain card, you can play that card, and in some cases you might be able to guarantee that you have the highest card). Do you think we could still map the tree of all outcomes but just thinking in higher order rules instead of every explicit outcome?
+* But, I think the complexity space is reduced by psychology.  If we were looking at a ton of random agents, then yeah, overwhelming and maybe boring.  But the strategy will reduce that space, maybe to significantly smaller.  If you are playing the auctioned card for instance, your complexity contribution is 1x1x1x...x1.
+* When is it optimal to bet that you will win this game? Is it at 31?
+* Let's say that you have the entire space of all possible games, but you exclude all of the turns after a player gets 46 points. What % of the turns do you think that would exclude in the space
