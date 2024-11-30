@@ -1,7 +1,6 @@
 import test_runner
 import the_other_guy
 
-
 turn_log_first_column = [ "auctioned_card", "agent1_card", "agent2_card", "agent3_card" ]
 turn_log_second_column = [ "winning_agent", "agent1_score", "agent2_score", "agent3_score" ]
 final_results = [ "agent1_final_score", "agent2_final_score", "agent3_final_score", "winning_agent"]
@@ -31,9 +30,7 @@ def main():
     test_runner.run() # comment this out if you don't want to run the system tests
 
     # here we specify three agent module names to test those strategies in the simulation
-    sim = the_other_guy.GameSimulation("random_agent", "random_agent", "random_agent") 
-    
-    results = sim.run()
+    results = the_other_guy.run_simulation("random_agent", "random_agent", "random_agent") 
     pretty_print_results(results)
 
 

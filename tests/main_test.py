@@ -7,8 +7,7 @@ agent_values = { None, 1, 2, 3 } # we use integers or None to represent agents
 def run():
 
     # we can run a simulation and get results in a dictionary
-    sim = the_other_guy.GameSimulation("test_agent", "test_agent", "random_agent")
-    results = sim.run()
+    results = the_other_guy.run_simulation("test_agent", "test_agent", "random_agent")
     
     assert isinstance(results, dict)
     
