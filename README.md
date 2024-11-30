@@ -2,14 +2,15 @@
 Statistical / game theory analysis on a card game called 'the other guy'
 
 # game rules
-1. Three players each have their own suite of cards (hearts, clubs, diamonds) -- i.e. a card for every whole number between 1 and 13.
+1. Three players each have their own suite of cards (hearts, clubs, diamonds) -- i.e. a card for every whole number between 1 and 13. ([Hyp] Ace is 1, Jack is 11, Queen is 12, and King is 13)
 2. Each turn, a random card from the spades suite is presented for auction. Players must bid for the card:
-   1. If two players play the same card, the third player wins the auctioned card
+   1. If two players play the same card, the third player ("the-other-guy" [Hyp]) wins the auctioned card
    2. If all players play the same card, no one wins the auctioned card and it's discarded (there are alternatives to this rule, such as adding the auctioned card to the next turn's auction card)
-   3. If all players play a different card, the highest card played wins the auctioned card
+   3. If all players play a different card, the highest card played wins the auctioned card ([Hyp] Suggestion from Burt, put this rule first as it's most common)
 3. Players with the highest sum of spades cards wins
+4. [Hyp] Alternative to cards, this game can be played online.  Where the "cards" are 1 to n where n does not have to be 13.
 
-What is the optimal strategy of play, if any?
+What is the optimal strategy of play, if any? [Hyp -- Burt adds, there is a Nash equilibrium, which will be a mixed strategy.  I.e. not deterministic.  We're looking for an ESS {Evolutionary Stable Strategy).  Every ESS is a Nash equilibrium but not every Nash is ESS. 
 
 # instructions for adding your own agent
 1. Have python 3 installed and test that you can run the project by opening a terminal and running `py main.py`
