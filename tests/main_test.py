@@ -1,6 +1,5 @@
 import the_other_guy
 
-
 card_values = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 } # we use ints to represent cards
 agent_values = { None, 1, 2, 3 } # we use integers or None to represent agents
 
@@ -41,22 +40,14 @@ def run():
         if agent3_card == agent2_card:
             assert winning_agent is None
         else:
-            assert winning_agent is 3
+            assert winning_agent == 3
             agent3_score += card_being_auctioned
             
         assert agent1_score == agent1_current_score
         assert agent2_score == agent2_current_score
         assert agent3_score == agent3_current_score
 
-    assert results["winning_agent"] == 3 # technically it is possible for the random_agent to pick all the same cards as agents 1 & 2, but unlikely
+    assert results["winning_agent"] == "random_agent" # technically it is possible for the random_agent to pick all the same cards as agents 1 & 2, but unlikely
     assert results["agent1_final_score"] == agent1_score
     assert results["agent2_final_score"] == agent2_score
     assert results["agent3_final_score"] == agent3_score
-        
-        
-    
-    
-   
-    
-    
-

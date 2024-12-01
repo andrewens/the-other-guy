@@ -14,3 +14,12 @@ def run():
         success = False
         
     assert not success, "GameSimulation failed to throw error when an agent played the same card twice"
+    
+    # (same thing, but with n > 1)
+    success = True
+    try:
+        the_other_guy.run_simulation("test_agent", "test_agent", "cheating_agent", n=10)
+    except Exception as e:
+        success = False
+        
+    assert not success, "GameSimulation failed to throw error when an agent played the same card twice, for n=10"

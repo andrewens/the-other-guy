@@ -29,9 +29,8 @@ def main():
     the_other_guy.run() # this just initializes the main simulation module
     test_runner.run() # comment this out if you don't want to run the system tests
 
-    # here we specify three agent module names to test those strategies in the simulation
-    results = the_other_guy.run_simulation("random_agent", "random_agent", "random_agent") 
-    pretty_print_results(results)
+    results = the_other_guy.run_simulation("burts_heuristic_agent", "random_agent", "random_agent", n=1000)
+    print(results)
 
 
 main()
