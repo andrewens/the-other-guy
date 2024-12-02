@@ -39,10 +39,10 @@ def probability_card_will_win(my_card, opponent1_cards, opponent2_cards):
 
 
 class Agent:
-    def __init__(self):
-        self._remaining_cards = list(range(1, 14)) # keep track of the cards left in our hand
-        self._opponent1_cards = list(range(1, 14))
-        self._opponent2_cards = list(range(1, 14))
+    def __init__(self, num_cards_per_suite):
+        self._remaining_cards = list(range(1, num_cards_per_suite + 1)) # keep track of the cards left in our hand
+        self._opponent1_cards = list(range(1, num_cards_per_suite + 1))
+        self._opponent2_cards = list(range(1, num_cards_per_suite + 1))
         self._round_number = 1
 
 

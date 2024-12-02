@@ -6,9 +6,9 @@ opts for the higher bid
 
 class Agent:
 
-    def __init__(self):
+    def __init__(self, num_cards_per_suite):
 
-        self._remaining_cards = list(range(1, 14)) # keep track of the cards left in our hand
+        self._remaining_cards = list(range(1, num_cards_per_suite + 1)) # keep track of the cards left in our hand
 
 
 

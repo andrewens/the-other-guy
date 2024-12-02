@@ -62,8 +62,8 @@ def get_winning_agent_name(score1, score2, score3, name1, name2, name3):
         return name3 + ", " + name1
 
 
-def new_agent(agent_name):
-    return AGENT_MODULES[agent_name].Agent()
+def new_agent(agent_name, num_cards_per_suite):
+    return AGENT_MODULES[agent_name].Agent(num_cards_per_suite)
 
 
 def all_list_values_less_than_value(list, value):
@@ -74,17 +74,34 @@ def all_list_values_less_than_value(list, value):
     return True
 
 
-def run_simulation_with_log(agent1_name, agent2_name, agent3_name):
-    agent1 = new_agent(agent1_name)
-    agent2 = new_agent(agent2_name)
-    agent3 = new_agent(agent3_name)
+def verify_agents_are_honest(agent1_card, agent2_card, agent3_card, agent1_cards_left, agent2_cards_left, agent3_cards_left, c):
+    if agent1_card not in agent1_cards_left:
+        reason = " twice!" if 1 <= agent1_card <= c else f", which is not in a suite of c={c} cards"
+        raise Exception(f"Agent1 played a {agent1_card}{reason}")
+    if agent2_card not in agent2_cards_left:
+        reason = " twice!" if 1 <= agent2_card <= c else f", which is not in a suite of c={c} cards"
+        raise Exception(f"Agent2 played a {agent2_card}{reason}")
+    if agent3_card not in agent3_cards_left:
+        reason = " twice!" if 1 <= agent3_card <= c else f", which is not in a suite of c={c} cards"
+        raise Exception(f"Agent3 played a {agent3_card}{reason}")
     
-    cards_left = list(range(1, 14))
+    agent1_cards_left.remove(agent1_card)
+    agent2_cards_left.remove(agent2_card)
+    agent3_cards_left.remove(agent3_card)
+
+
+def run_simulation_with_log(agent1_name, agent2_name, agent3_name, c):
+    agent1 = new_agent(agent1_name, c)
+    agent2 = new_agent(agent2_name, c)
+    agent3 = new_agent(agent3_name, c)
+    
+    cards_range = range(1, c + 1)
+    cards_left = list(cards_range)
     log = []
     
-    agent1_cards_left = set(range(1, 14))
-    agent2_cards_left = set(range(1, 14))
-    agent3_cards_left = set(range(1, 14))
+    agent1_cards_left = set(cards_range)
+    agent2_cards_left = set(cards_range)
+    agent3_cards_left = set(cards_range)
     
     agent1_score = 0
     agent2_score = 0
@@ -99,16 +116,7 @@ def run_simulation_with_log(agent1_name, agent2_name, agent3_name):
         agent3_card = agent3.play_card(auctioned_card)
         
         # make sure agents are being honest
-        if agent1_card not in agent1_cards_left:
-            raise Exception(f"Agent1 played a {agent1_card} twice!")
-        if agent2_card not in agent2_cards_left:
-            raise Exception(f"Agent2 played a {agent2_card} twice!")
-        if agent3_card not in agent3_cards_left:
-            raise Exception(f"Agent3 played a {agent3_card} twice!")
-
-        agent1_cards_left.remove(agent1_card)
-        agent2_cards_left.remove(agent2_card)
-        agent3_cards_left.remove(agent3_card)
+        verify_agents_are_honest(agent1_card, agent2_card, agent3_card, agent1_cards_left, agent2_cards_left, agent3_cards_left, c)
         
         # who won?
         winning_agent = calculate_winning_agent(agent1_card, agent2_card, agent3_card)
@@ -158,16 +166,17 @@ def run_simulation_with_log(agent1_name, agent2_name, agent3_name):
     }
 
 
-def run_simulation_without_log(agent1_name, agent2_name, agent3_name):
-    agent1 = new_agent(agent1_name)
-    agent2 = new_agent(agent2_name)
-    agent3 = new_agent(agent3_name)
+def run_simulation_without_log(agent1_name, agent2_name, agent3_name, c):
+    agent1 = new_agent(agent1_name, c)
+    agent2 = new_agent(agent2_name, c)
+    agent3 = new_agent(agent3_name, c)
     
-    cards_left = list(range(1, 14))
+    cards_range = range(1, c + 1)
+    cards_left = list(cards_range)
     
-    agent1_cards_left = set(range(1, 14))
-    agent2_cards_left = set(range(1, 14))
-    agent3_cards_left = set(range(1, 14))
+    agent1_cards_left = set(cards_range)
+    agent2_cards_left = set(cards_range)
+    agent3_cards_left = set(cards_range)
     
     agent1_score = 0
     agent2_score = 0
@@ -182,16 +191,7 @@ def run_simulation_without_log(agent1_name, agent2_name, agent3_name):
         agent3_card = agent3.play_card(auctioned_card)
         
         # make sure agents are being honest
-        if agent1_card not in agent1_cards_left:
-            raise Exception(f"Agent1 played a {agent1_card} twice!")
-        if agent2_card not in agent2_cards_left:
-            raise Exception(f"Agent2 played a {agent2_card} twice!")
-        if agent3_card not in agent3_cards_left:
-            raise Exception(f"Agent3 played a {agent3_card} twice!")
-
-        agent1_cards_left.remove(agent1_card)
-        agent2_cards_left.remove(agent2_card)
-        agent3_cards_left.remove(agent3_card)
+        verify_agents_are_honest(agent1_card, agent2_card, agent3_card, agent1_cards_left, agent2_cards_left, agent3_cards_left, c)
         
         # who won?
         winning_agent = calculate_winning_agent(agent1_card, agent2_card, agent3_card)
@@ -235,7 +235,7 @@ def run_simulation_without_log(agent1_name, agent2_name, agent3_name):
         return 0.5, 0, 0.5
 
 
-def run_all_possible_combinations_of_agents(n, agents):
+def run_all_possible_combinations_of_agents(agents, n, c):
     if not isinstance(n, int):
         raise Exception(str(n) + " is not an integer!")
     if not isinstance(agents, list):
@@ -262,7 +262,7 @@ def run_all_possible_combinations_of_agents(n, agents):
     
     results = []
 
-    for i in range(num_agents):
+    for i in range(num_agents): # TODO this method of generating permutations creates duplicates we don't want because order doesn't matter
         for j in range(num_agents):
             for k in range(num_agents):
                 agent1 = agents[i]
@@ -278,7 +278,7 @@ def run_all_possible_combinations_of_agents(n, agents):
                 
                 for _ in range(tests_per_permutation):
                     try:
-                        score1, score2, score3 = run_simulation_without_log(agent1, agent2, agent3)
+                        score1, score2, score3 = run_simulation_without_log(agent1, agent2, agent3, c)
                         
                         agent1_score += score1
                         agent2_score += score2
@@ -301,10 +301,22 @@ def run_all_possible_combinations_of_agents(n, agents):
 
 
 # public
-def run_simulation(agent1="random_agent", agent2="random_agent", agent3="random_agent", n=1, generate_log=True, agents=None):
+def run_simulation(agent1="random_agent", agent2="random_agent", agent3="random_agent", n=1, c=13, generate_log=True, agents=None):
+    # c is the number of cards in a suite / hand. default is 13 because ... 10, jack, queen, king --> 10, 11, 12, 13 cards in a suite (normally)
+    if not isinstance(c, int):
+        raise Exception(f"c={c} is not an integer!")
+    if not c >= 1:
+        raise Exception(f"c={c} is not greater than or equal to 1!")
+    
+    # n is the number of games you want to run
+    if not isinstance(n, int):
+        raise Exception(f"n={n} is not an integer!")
+    if not n >= 1:
+        raise Exception(f"n={n} is not greater than or equal to 1!")
+
     # run through every permutation of a set of agents
     if not agents is None:
-        return run_all_possible_combinations_of_agents(n, agents)
+        return run_all_possible_combinations_of_agents(agents, n, c)
     
     # run some number of games with three specific agents
     if agent1 not in AGENT_MODULES:
@@ -314,20 +326,17 @@ def run_simulation(agent1="random_agent", agent2="random_agent", agent3="random_
     if agent3 not in AGENT_MODULES:
         raise Exception(str(agent3) + " is not the name of an agent module!")
 
-    # n is the number of games you want to run
-    if n < 1:
-        return # IDK why you would *want* to do this, but...
-
+    # run one game and keep a log of what happened each turn
     if n == 1 and generate_log:
-        return run_simulation_with_log(agent1, agent2, agent3)
+        return run_simulation_with_log(agent1, agent2, agent3, c)
 
-    # n >= 1
+    # run 1 or more games, only keeping track of score
     agent1_wins = 0
     agent2_wins = 0
     agent3_wins = 0
 
     for i in range(n):
-        w1, w2, w3 = run_simulation_without_log(agent1, agent2, agent3)
+        w1, w2, w3 = run_simulation_without_log(agent1, agent2, agent3, c)
         agent1_wins += w1
         agent2_wins += w2
         agent3_wins += w3

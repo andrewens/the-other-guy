@@ -1,9 +1,11 @@
 import test_runner
 import the_other_guy
 
+
 turn_log_first_column = [ "auctioned_card", "agent1_card", "agent2_card", "agent3_card" ]
 turn_log_second_column = [ "winning_agent", "agent1_score", "agent2_score", "agent3_score" ]
 final_results = [ "agent1_final_score", "agent2_final_score", "agent3_final_score", "winning_agent"]
+
 
 def pad_string(string, min_chars):
     string = str(string)
@@ -12,16 +14,17 @@ def pad_string(string, min_chars):
 
 def pretty_print_single_game_results(results):
     print("\n")
-    for i in range(13):
-        turn_log = results["log"][i]
-
-        print(f"Turn #{i+1}")
+    j = 0
+    for turn_log in results["log"]:
+        j += 1
+        print(f"Turn #{j}")
         
         for i in range(len(turn_log_first_column)):
             key1 = turn_log_first_column[i]
             key2 = turn_log_second_column[i]
 
             print(f"\t{key1}: {turn_log[key1]}   \t{key2}: {turn_log[key2]}")
+            
 
     print("\n")
     for key in final_results:
@@ -59,13 +62,24 @@ def pretty_print_round_robin_results(results):
 
 def main():
     the_other_guy.run() # this just initializes the main simulation module
-    test_runner.run() # comment this out if you don't want to run the system tests
+    # test_runner.run() # comment this out if you don't want to run the system tests
 
+    """
     results = the_other_guy.run_simulation(
         agents=["burts_heuristic_agent", "random_agent", "ditto_agent"], 
         n=1000 # this is the total number of games we're willing to run, *NOT* the number of games per permutation
     )
     pretty_print_round_robin_results(results)
+    """
+    
+    results = the_other_guy.run_simulation(
+        agent1 = "burts_heuristic_agent",
+        agent2 = "random_agent",
+        agent3 = "ditto_agent",
+        n = 1,
+        c = 5
+    )
+    pretty_print_single_game_results(results)
 
 
 main()

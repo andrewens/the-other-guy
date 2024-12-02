@@ -4,14 +4,14 @@ An agent that knows the value of things
 
 class Agent:
 
-    def __init__(self):
+    def __init__(self, num_cards_per_suite):
 
-        self._auction_cards_left = list(range(1,14))
+        self._auction_cards_left = list(range(1, num_cards_per_suite + 1))
 
-        self._remaining_cards = list(range(1, 14))
+        self._remaining_cards = list(range(1, num_cards_per_suite + 1))
 
-        self._left_player_cards = list(range(1,14))
-        self._right_player_cards = list(range(1,14))
+        self._left_player_cards = list(range(1, num_cards_per_suite + 1))
+        self._right_player_cards = list(range(1, num_cards_per_suite + 1))
 
     def play_card(self, auctioned_card):
 

@@ -4,8 +4,8 @@ Will bid 1 on the King(13)
 """
 
 class Agent:
-    def __init__(self):
-        self._remaining_cards = list(range(1, 14)) # keep track of the cards left in our hand
+    def __init__(self, num_cards_per_suite):
+        self._remaining_cards = list(range(1, num_cards_per_suite + 1)) # keep track of the cards left in our hand
 
     def play_card(self, auctioned_card): 
         one_up_index = -1 
