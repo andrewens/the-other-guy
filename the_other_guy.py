@@ -2,9 +2,12 @@
 This is the main interface for all game simulation code.
 """
 
+
 import os
-import importlib
+import math
 import random
+import importlib
+
 
 AGENTS_DIRECTORY_NAME = "agents"
 AGENT_MODULES = {} # string agent_name --> <Module>
@@ -61,6 +64,14 @@ def get_winning_agent_name(score1, score2, score3, name1, name2, name3):
 
 def new_agent(agent_name):
     return AGENT_MODULES[agent_name].Agent()
+
+
+def all_list_values_less_than_value(list, value):
+    for v in list:
+        if v >= value:
+            return False
+    
+    return True
 
 
 def run_simulation_with_log(agent1_name, agent2_name, agent3_name):
@@ -224,34 +235,104 @@ def run_simulation_without_log(agent1_name, agent2_name, agent3_name):
         return 0.5, 0, 0.5
 
 
+def run_all_possible_combinations_of_agents(n, agents):
+    if not isinstance(n, int):
+        raise Exception(str(n) + " is not an integer!")
+    if not isinstance(agents, list):
+        raise Exception(str(agents) + " is not a list!")
+    
+    unique_agents = []
+    for agent_name in agents:
+        if agent_name in unique_agents: # don't count duplicate agents twice
+            continue
+        
+        if agent_name in AGENT_MODULES:
+            unique_agents.append(agent_name)
+            continue
+        
+        raise Exception(str(agent_name) + " is not the name of an agent module!")
+    
+    agents = unique_agents
+    num_agents = len(agents)
+    num_permutations = num_agents ** num_agents
+    tests_per_permutation = math.floor(n / num_permutations)
+    
+    if n < num_permutations:
+        raise Exception(f"There are {num_permutations} permutations for {num_agents} agents, but n={n} is less than the number of permutations.")
+    
+    results = []
+
+    for i in range(num_agents):
+        for j in range(num_agents):
+            for k in range(num_agents):
+                agent1 = agents[i]
+                agent2 = agents[j]
+                agent3 = agents[k]
+
+                agent1_score = 0
+                agent2_score = 0
+                agent3_score = 0
+
+                no_cheating = True
+                winning_agent = 0
+                
+                for _ in range(tests_per_permutation):
+                    try:
+                        score1, score2, score3 = run_simulation_without_log(agent1, agent2, agent3)
+                        
+                        agent1_score += score1
+                        agent2_score += score2
+                        agent3_score += score3
+                    except:
+                        no_cheating = False
+                        break
+
+                winning_agent = 0
+                if agent1_score > max(agent2_score, agent3_score):
+                    winning_agent = 1
+                elif agent2_score > max(agent3_score, agent1_score):
+                    winning_agent = 2
+                elif agent3_score > max(agent1_score, agent2_score):
+                    winning_agent = 3
+                
+                results.append((agent1, agent1_score, agent2, agent2_score, agent3, agent3_score, no_cheating, winning_agent))
+
+    return results
+
+
 # public
-def run_simulation(agent1_name, agent2_name, agent3_name, n=1, generate_log=True):
-    if agent1_name not in AGENT_MODULES:
-        raise Exception(str(agent1_name) + " is not the name of an agent module!")
-    if agent2_name not in AGENT_MODULES:
-        raise Exception(str(agent2_name) + " is not the name of an agent module!")
-    if agent3_name not in AGENT_MODULES:
-        raise Exception(str(agent3_name) + " is not the name of an agent module!")
+def run_simulation(agent1="random_agent", agent2="random_agent", agent3="random_agent", n=1, generate_log=True, agents=None):
+    # run through every permutation of a set of agents
+    if not agents is None:
+        return run_all_possible_combinations_of_agents(n, agents)
+    
+    # run some number of games with three specific agents
+    if agent1 not in AGENT_MODULES:
+        raise Exception(str(agent1) + " is not the name of an agent module!")
+    if agent2 not in AGENT_MODULES:
+        raise Exception(str(agent2) + " is not the name of an agent module!")
+    if agent3 not in AGENT_MODULES:
+        raise Exception(str(agent3) + " is not the name of an agent module!")
 
     # n is the number of games you want to run
     if n < 1:
         return # IDK why you would *want* to do this, but...
 
     if n == 1 and generate_log:
-        return run_simulation_with_log(agent1_name, agent2_name, agent3_name)
+        return run_simulation_with_log(agent1, agent2, agent3)
 
     # n >= 1
     agent1_wins = 0
     agent2_wins = 0
     agent3_wins = 0
 
-    for i in range(1, n+1):
-        w1, w2, w3 = run_simulation_without_log(agent1_name, agent2_name, agent3_name)
+    for i in range(n):
+        w1, w2, w3 = run_simulation_without_log(agent1, agent2, agent3)
         agent1_wins += w1
         agent2_wins += w2
         agent3_wins += w3
 
-    winning_agent = get_winning_agent_name(agent1_wins, agent2_wins, agent3_wins, agent1_name, agent2_name, agent3_name)
+    winning_agent = get_winning_agent_name(agent1_wins, agent2_wins, agent3_wins, agent1, agent2, agent3)
 
     return {
         "agent1_wins": agent1_wins,
