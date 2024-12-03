@@ -12,8 +12,15 @@ def pad_string(string, min_chars):
     return string + " " * (min_chars - len(string))
 
 
+def pretty_print_dict(results):
+    print()
+    for k, v in results.items():
+        print(k, v)
+    print()
+
+
 def pretty_print_single_game_results(results):
-    print("\n")
+    print()
     j = 0
     for turn_log in results["log"]:
         j += 1
@@ -26,14 +33,15 @@ def pretty_print_single_game_results(results):
             print(f"\t{key1}: {turn_log[key1]}   \t{key2}: {turn_log[key2]}")
             
 
-    print("\n")
+    print()
     for key in final_results:
         print(f"{key}: {results[key]}")
 
-    print("\n")
+    print()
     
     
 def pretty_print_round_robin_results(results):
+    print()
     for i in range(len(results)):
         agent1 = results[i][0]
         agent2 = results[i][2]
@@ -58,28 +66,41 @@ def pretty_print_round_robin_results(results):
             pad_string(score3, 5),
             f"no cheating: {no_cheating}"
         )
+    print()
+
+
+def pretty_print_any_result(results):
+    if "log" in results:
+        pretty_print_single_game_results(results)
+        return
+    
+    if isinstance(results, list):
+        pretty_print_round_robin_results(results)
+        return
+    
+    pretty_print_dict(results)
 
 
 def main():
     the_other_guy.run() # this just initializes the main simulation module
-    # test_runner.run() # comment this out if you don't want to run the system tests
+    test_runner.run() # comment this out if you don't want to run the system tests
 
     """
     results = the_other_guy.run_simulation(
         agents=["burts_heuristic_agent", "random_agent", "ditto_agent"], 
         n=1000 # this is the total number of games we're willing to run, *NOT* the number of games per permutation
     )
-    pretty_print_round_robin_results(results)
+    pretty_print_any_result(results)
     """
-    
+
     results = the_other_guy.run_simulation(
         agent1 = "burts_heuristic_agent",
         agent2 = "random_agent",
         agent3 = "ditto_agent",
-        n = 1,
+        n = 1000,
         c = 5
     )
-    pretty_print_single_game_results(results)
+    pretty_print_any_result(results)
 
 
 main()
