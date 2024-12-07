@@ -300,11 +300,12 @@ def run_all_possible_combinations_of_agents(agents, n, c):
     return results
 
 
-def do_i_win_this_game(auctioned_cards, my_cards, player2_cards, player3_cards):
+def do_i_win_this_game(auctioned_cards, my_cards, player2_cards, player3_cards, score):
     # each arg is a tuple or list of cards that were played by each player (+ auction pile) per turn
+    # and score is the preexisting score of each player (optional)
 
     num_turns = len(auctioned_cards)
-    score = [0, 0, 0] # int (player_index - 1) --> int score (sum of won auctioned cards)
+    score = [0, 0, 0] if score is None else list(score) # int (player_index - 1) --> int score (sum of won auctioned cards)
 
     for i in range(num_turns):
         winning_agent = calculate_winning_agent(my_cards[i], player2_cards[i], player3_cards[i])
@@ -356,7 +357,7 @@ def list_permutations(items):
     return permutations
 
 
-def calculate_card_win_chances(auctioned_card, auction_pile, your_cards, player2_cards, player3_cards):
+def calculate_card_win_chances(auctioned_card, auction_pile, your_cards, player2_cards, player3_cards, initial_score):
     if not (isinstance(auctioned_card, int) and auctioned_card > 0):
         raise Exception(f"{auctioned_card} is not a whole number!")
     if not isinstance(auction_pile, set):
@@ -367,6 +368,8 @@ def calculate_card_win_chances(auctioned_card, auction_pile, your_cards, player2
         raise Exception(f"{player2_cards} is not a set!")
     if not isinstance(player3_cards, set):
         raise Exception(f"{player3_cards} is not a set!")
+    if not (initial_score is None or isinstance(initial_score, list)):
+        raise Exception(f"{initial_score} is not a list! (it can also be None)")
     
     auction_perms = list_permutations(auction_pile)
     player1_perms = list_permutations(your_cards)
@@ -386,7 +389,7 @@ def calculate_card_win_chances(auctioned_card, auction_pile, your_cards, player2
                 for Z in player3_perms:
                     card_i_played = X[0]
                     games_played_per_card_in_hand[card_i_played] += 1
-                    i_won = do_i_win_this_game((auctioned_card,) + P, X, Y, Z)
+                    i_won = do_i_win_this_game((auctioned_card,) + P, X, Y, Z, initial_score)
                     
                     if i_won:
                         win_chances[card_i_played] += 1

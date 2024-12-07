@@ -10,12 +10,11 @@ def run():
     player1 = {1, 2, 3}
     player2 = {1, 2, 3}
     player3 = {1, 2, 3}
+    initial_score = [0, 0, 0]
     
-    card_win_chances = the_other_guy.calculate_card_win_chances(auctioned_card, auction_pile, player1, player2, player3)
+    card_win_chances = the_other_guy.calculate_card_win_chances(auctioned_card, auction_pile, player1, player2, player3, initial_score)
     
     assert isinstance(card_win_chances, dict)
     assert isinstance(card_win_chances[1], float)
     assert isinstance(card_win_chances[2], float)
     assert isinstance(card_win_chances[3], float)
-    
-    print(card_win_chances)
