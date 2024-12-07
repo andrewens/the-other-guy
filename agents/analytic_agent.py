@@ -4,7 +4,7 @@ Calculate exact odds that each card will win, assign those odds as weights and r
 
 import the_other_guy
 
-MAX_ALLOWED_CARDS_PER_SUITE = 3
+MAX_ALLOWED_CARDS_PER_SUITE = 4
 
 class Agent:
     def __init__(self, num_cards_per_suite):

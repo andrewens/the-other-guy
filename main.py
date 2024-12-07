@@ -96,9 +96,9 @@ def main():
     results = the_other_guy.run_simulation(
         agent1 = "analytic_agent",
         agent2 = "random_agent",
-        agent3 = "ditto_agent",
+        agent3 = "burts_heuristic_agent",
         n = 1,
-        c = 3
+        c = 5
     )
     pretty_print_any_result(results)
 

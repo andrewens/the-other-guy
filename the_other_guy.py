@@ -318,6 +318,28 @@ def do_i_win_this_game(auctioned_cards, my_cards, player2_cards, player3_cards, 
 
 
 # public
+def pick_heaviest_item(items):
+    if not isinstance(items, dict):
+        raise Exception(f"{items} is not a dictionary!")
+    
+    first_key, first_value = next(iter(items.items()))
+    if first_key is None:
+        return None
+    
+    if not (isinstance(first_value, int) or isinstance(first_value, float)):
+        raise Exception(f"Items' values must be numbers, not whatever this is: {first_value}")
+    
+    max = -math.inf
+    heaviest_item = None
+
+    for item_to_pick, item_probability in items.items():
+        if item_probability > max:
+            max = item_probability
+            heaviest_item = item_to_pick
+        
+    return heaviest_item
+    
+    
 def pick_weighted_item(items):
     if not isinstance(items, dict):
         raise Exception(f"{items} is not a dictionary!")
