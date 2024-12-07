@@ -318,6 +318,33 @@ def do_i_win_this_game(auctioned_cards, my_cards, player2_cards, player3_cards, 
 
 
 # public
+def pick_weighted_item(items):
+    if not isinstance(items, dict):
+        raise Exception(f"{items} is not a dictionary!")
+    
+    first_key, first_value = next(iter(items.items()))
+    if first_key is None:
+        return None
+    
+    if not (isinstance(first_value, int) or isinstance(first_value, float)):
+        raise Exception(f"Items' values must be numbers, not whatever this is: {first_value}")
+    
+    sum = 0
+    items_ordered = [] # [ (item, number weight + prev_weights) ] 
+
+    for item_to_pick, item_probability in items.items():
+        items_ordered.append((item_to_pick, item_probability + sum))
+        sum += item_probability
+        
+    random_float = random.random() * sum
+    
+    for item in items_ordered:
+        if random_float <= item[1]:
+            return item[0]
+        
+    # it should never get down here
+
+
 def list_permutations(items):
     if not isinstance(items, set):
         raise Exception(f"{items} is not a set!")

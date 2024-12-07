@@ -103,6 +103,7 @@ def main():
     )
     pretty_print_any_result(results)
     """
+
     return
 
     cards = {1, 2, 3, 4}

@@ -3,7 +3,6 @@ import the_other_guy
 def run():
     # given the current auctioned card, a set of remaining cards (and the remaining cards of your opponents + the auction pile),
     # calculate the % of possible games that you win for each card in your hand if you play that card
-    # TODO this needs to account for any existing score T_T
 
     auctioned_card = 2
     auction_pile = {1, 3}
