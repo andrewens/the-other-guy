@@ -97,10 +97,10 @@ def main():
         agent1 = "burts_heuristic_agent",
         agent2 = "random_agent",
         agent3 = "ditto_agent",
-        n = 1000,
+        n = 1,
         c = 5
     )
-    pretty_print_any_result(results)
+    # pretty_print_any_result(results)
 
 
 main()

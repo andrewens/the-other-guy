@@ -301,6 +301,45 @@ def run_all_possible_combinations_of_agents(agents, n, c):
 
 
 # public
+def list_permutations(items):
+    if not isinstance(items, set):
+        raise Exception(f"{items} is not a set!")
+    
+    num_items = len(items)
+
+    pointers = [] # [ num_items - 1, num_items - 2, ... 1, 0 ]
+    for i in range(num_items):
+        pointers.append(num_items - i - 1)
+
+    permutations = set() # { (item1, item2, ...,  item_n), (item2, item1, ..., item_n), ..., (item_n, item_n-1, ..., item1) }
+    
+    while True:
+        # copy set of items
+        items_clone = list(items)
+        
+        # build a list of selected items
+        perm = []
+        for pointer in pointers:
+            perm.append(items_clone.pop(pointer))
+
+        # convert list to tuple (vomit) and save it
+        permutations.add(tuple(perm))
+        
+        # are we done? x_x
+        if sum(pointers) <= 0:
+            break
+        
+        # increment pointers
+        for i in range(num_items - 1, -1, -1):
+            pointers[i] -= 1
+            if pointers[i] >= 0:
+                break
+            
+            pointers[i] = num_items - i - 1
+
+    return permutations
+
+    
 def run_simulation(agent1="random_agent", agent2="random_agent", agent3="random_agent", n=1, c=13, generate_log=True, agents=None):
     # c is the number of cards in a suite / hand. default is 13 because ... 10, jack, queen, king --> 10, 11, 12, 13 cards in a suite (normally)
     if not isinstance(c, int):

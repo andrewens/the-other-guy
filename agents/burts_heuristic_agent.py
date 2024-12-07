@@ -19,8 +19,10 @@ def _print(*args):
         return
     print(*args)
 
+
 def trunc(n):
     return math.floor(n * 1E3)
+
 
 def does_my_card_win(my_card, agent2_card, agent3_card):
     return (agent2_card == agent3_card and agent3_card != my_card) or (my_card > max(agent2_card, agent3_card))
