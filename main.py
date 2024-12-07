@@ -93,6 +93,7 @@ def main():
     pretty_print_any_result(results)
     """
 
+    """
     results = the_other_guy.run_simulation(
         agent1 = "burts_heuristic_agent",
         agent2 = "random_agent",
@@ -100,7 +101,22 @@ def main():
         n = 1,
         c = 5
     )
-    # pretty_print_any_result(results)
+    pretty_print_any_result(results)
+    """
+    return
+
+    cards = {1, 2, 3, 4}
+    perms = the_other_guy.list_permutations(cards)
+    
+    for P in perms:
+        for X in perms:
+            for Y in perms:
+                for Z in perms:
+                    str = ""
+                    for i in range(len(cards)):
+                        str += f"[{P[i]}] {X[i]} {Y[i]} {Z[i]} "
+                    print(str)
+    
 
 
 main()

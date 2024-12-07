@@ -300,6 +300,22 @@ def run_all_possible_combinations_of_agents(agents, n, c):
     return results
 
 
+def do_i_win_this_game(auctioned_cards, my_cards, player2_cards, player3_cards):
+    # each arg is a tuple or list of cards that were played by each player (+ auction pile) per turn
+
+    num_turns = len(auctioned_cards)
+    score = [0, 0, 0] # int (player_index - 1) --> int score (sum of won auctioned cards)
+
+    for i in range(num_turns):
+        winning_agent = calculate_winning_agent(my_cards[i], player2_cards[i], player3_cards[i])
+        if winning_agent is None:
+            continue
+        
+        score[winning_agent - 1] += auctioned_cards[i]
+    
+    return score[0] > max(score[1], score[2])
+
+
 # public
 def list_permutations(items):
     if not isinstance(items, set):
@@ -339,7 +355,48 @@ def list_permutations(items):
 
     return permutations
 
+
+def calculate_card_win_chances(auctioned_card, auction_pile, your_cards, player2_cards, player3_cards):
+    if not (isinstance(auctioned_card, int) and auctioned_card > 0):
+        raise Exception(f"{auctioned_card} is not a whole number!")
+    if not isinstance(auction_pile, set):
+        raise Exception(f"{auction_pile} is not a set!")
+    if not isinstance(your_cards, set):
+        raise Exception(f"{your_cards} is not a set!")
+    if not isinstance(player2_cards, set):
+        raise Exception(f"{player2_cards} is not a set!")
+    if not isinstance(player3_cards, set):
+        raise Exception(f"{player3_cards} is not a set!")
     
+    auction_perms = list_permutations(auction_pile)
+    player1_perms = list_permutations(your_cards)
+    player2_perms = list_permutations(player2_cards)
+    player3_perms = list_permutations(player3_cards)
+    
+    games_played_per_card_in_hand = dict() # int card_in_my_hand --> int games_played (doing this because i don't trust myself to do it with a formula)
+    win_chances = dict() # int card_in_my_hand --> float percent_possible_games_it_wins
+
+    for card in your_cards:
+        win_chances[card] = 0
+        games_played_per_card_in_hand[card] = 0
+    
+    for P in auction_perms:
+        for X in player1_perms:
+            for Y in player2_perms:
+                for Z in player3_perms:
+                    card_i_played = X[0]
+                    games_played_per_card_in_hand[card_i_played] += 1
+                    i_won = do_i_win_this_game((auctioned_card,) + P, X, Y, Z)
+                    
+                    if i_won:
+                        win_chances[card_i_played] += 1
+
+    for card in your_cards:
+        win_chances[card] = win_chances[card] / games_played_per_card_in_hand[card]
+
+    return win_chances
+
+
 def run_simulation(agent1="random_agent", agent2="random_agent", agent3="random_agent", n=1, c=13, generate_log=True, agents=None):
     # c is the number of cards in a suite / hand. default is 13 because ... 10, jack, queen, king --> 10, 11, 12, 13 cards in a suite (normally)
     if not isinstance(c, int):
